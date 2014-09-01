@@ -24,6 +24,7 @@ Please note that a number of these scripts are either modifications to existing 
 - Transfers the first 6 bases of a given R2 fastq to the beginning of a R1 file, producing a third fastq
 - For use if you only have the two demultiplexed paired end fastqs from the MiSeq
 - Outputs a third '.fq' file
+
 ###    • DualIndexDemultiplexing.py
 - Performs a similar role as AddAllR2Hex.py, but used when you additionally have the index read fastq
 - Allows manual demultiplexing of samples along with simultaneous barcode preparation
