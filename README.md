@@ -1,8 +1,8 @@
 #JamieHeather/tcr-analysis README.md v1
 
-University College London, UK, 2014
+James M. Heather, University College London, UK, 2014
 
-[![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.11555.png)](http://dx.doi.org/10.5281/zenodo.11555)
+http://dx.doi.org/10.6084/m9.figshare.1157428 
 
 This repository has been built to contain the suite of inter-related T-cell receptor (TCR) analysis scripts that I've developed in the course of my PhD, here made available as an adjunct to my doctoral thesis.
 
