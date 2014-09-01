@@ -2,6 +2,8 @@
 
 University College London, UK, 2014
 
+[![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.11555.png)](http://dx.doi.org/10.5281/zenodo.11555)
+
 This repository has been built to contain the suite of inter-related T-cell receptor (TCR) analysis scripts that I've developed in the course of my PhD, here made available as an adjunct to my doctoral thesis.
 
 A number of these scripts were also used in the analysis of the data that made up the results of my paper (Heather et al, ***ADD REFERENCE***).
@@ -10,7 +12,7 @@ A number of these scripts were also used in the analysis of the data that made u
 
 Please note that a number of these scripts are either modifications to existing code (such as vDCR.py, which is my re-working of code produced by Dr. Niclas Thomas) or in close colloboration with other lab members, particularly Katharine Best.
 
-===== STANDARD PIPELINE =====
+##===== STANDARD PIPELINE =====
 
 ##0) Deep-sequence TCR transcripts!
 
@@ -62,7 +64,7 @@ Please note that a number of these scripts are either modifications to existing 
   - Output can be just unique CDR3s (with their frequencies), or can be unique DCR assignations with their CDR3s/frequencies
     - Using this option means that CDR3s can appear on multiple lines, as they can be encoded by multiple DCRs
     
-NOTES ON USAGE
+###NOTES ON PIPELINE
 - All scripts assume that any Decombined file has the TCR 5-part identifier as the first 5 fields, in the same order
   - Hence any downstream analysis must not alter these, only append to them
 - Filenames are often used to provide information to downstream scripts, therefore:
@@ -73,7 +75,7 @@ NOTES ON USAGE
 - All R scripts were written in and tested on R version 3.0.2
  
  
-====== OPTIONAL EXTRAS ======
+##====== OPTIONAL EXTRAS ======
 
 ##PLOTTING
 ###    • PlotDCR.py 
