@@ -10,9 +10,7 @@ A number of these scripts were also used in the analysis of the data that made u
 
 Please note that a number of these scripts are either modifications to existing code (such as vDCR.py, which is my re-working of code produced by Dr. Niclas Thomas) or in close colloboration with other lab members, particularly Katharine Best.
 
-=============================
 ===== STANDARD PIPELINE =====
-=============================
 
 ##0) Deep-sequence TCR transcripts!
 
@@ -35,6 +33,7 @@ Please note that a number of these scripts are either modifications to existing 
 ##2) DECOMBINE 
 ###    • vDCR.py
 - Built on standard Decombinator (DCR) v1.4
+  - See https://github.com/uclinfectionimmunity/Decombinator/ and http://dx.doi.org/10.1093/bioinformatics/btt004
 - Outputs additional fields beyond the typical 5:
   - ID of read
   - TCR nucleotide sequence (start of V tag to end of J tag)
@@ -74,9 +73,7 @@ NOTES ON USAGE
 - All R scripts were written in and tested on R version 3.0.2
  
  
-=============================
 ====== OPTIONAL EXTRAS ======
-=============================
 
 ##PLOTTING
 ###    • PlotDCR.py 
