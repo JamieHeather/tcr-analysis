@@ -22,7 +22,7 @@
   # Fourth is a comma delimited file detailing sample index specifics, one per line:
     # Sample name, SP1/R1 index (I), SP2/R2 index (L):
     # eg: P005v1,1,11
-# Run: python AddAllR2Hex.py read1.fastq read2.fastq read3.fastq indexes.ndx
+# Run: python DualIndexDemultiplexing.py read1.fastq read2.fastq read3.fastq indexes.ndx
 
 ##################
 ##### OUTPUT #####  
@@ -52,7 +52,7 @@ import os
 filename = ""
 
 if (len(sys.argv) <> 5):
-  print "Please supply 2 input and one output file names (i.e. python AddAllR2Hex.py read1.fastq read2.fastq output.fq)"
+  print "Please supply the three read fastq files and sample/index file (e.g. python DualIndexDemultiplexing.py read1.fastq read2.fastq read3.fastq indexes.ndx)"
   sys.exit()
 else:
   rd1file = str(sys.argv[1])
