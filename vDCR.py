@@ -130,7 +130,7 @@ def analysis( Sequence_Reads, results, chain, with_statistics=True, with_reverse
 	  if os.path.isfile("human_TRAJ_region.fasta"):
 	    handle = open("human_TRAJ_region.fasta", "rU")
 	  else:
-	    handle = urllib2.urlopen("https://raw.githubusercontent.com/uclinfectionimmunity/Decombinator/master/human_TRAJ_region.fasta")    
+	    handle =    urllib2.urlopen("https://raw.githubusercontent.com/uclinfectionimmunity/Decombinator/master/human_TRAJ_region.fasta")    
 	elif tags == "extended":
 	  if os.path.isfile("exthuman_TRAJ_region.fasta"):  
 	    handle = open("exthuman_TRAJ_region.fasta", "rU")
@@ -154,8 +154,8 @@ def analysis( Sequence_Reads, results, chain, with_statistics=True, with_reverse
 	    v_seqs, half1_v_seqs, half2_v_seqs, jump_to_end_v = get_v_tags(open("tags_trav.txt", "rU"), v_half_split)
 	    j_seqs, half1_j_seqs, half2_j_seqs, jump_to_start_j = get_j_tags(open("tags_traj.txt", "rU"), j_half_split)
 	  else:
-	    v_seqs, half1_v_seqs, half2_v_seqs, jump_to_end_v = get_v_tags(urllib2.urlopen("https://raw.githubusercontent.com/uclinfectionimmunity/Decombinator/master/tags_trav.txt"), v_half_split)
-	    j_seqs, half1_j_seqs, half2_j_seqs, jump_to_start_j = get_j_tags(urllib2.urlopen("https://raw.githubusercontent.com/uclinfectionimmunity/Decombinator/master/tags_traj.txt"), j_half_split)	    
+	    v_seqs, half1_v_seqs, half2_v_seqs, jump_to_end_v = get_v_tags(urllib2.urlopen("https://raw.githubusercontent.com/uclinfectionimmunity/Decombinator/master/humantags_trav.txt"), v_half_split)
+	    j_seqs, half1_j_seqs, half2_j_seqs, jump_to_start_j = get_j_tags(urllib2.urlopen("https://raw.githubusercontent.com/uclinfectionimmunity/Decombinator/master/humantags_traj.txt"), j_half_split)	           
 	elif tags == "extended":
 	  if os.path.isfile("exttags_trav.txt") and os.path.isfile("exttags_traj.txt"):  
 	    v_seqs, half1_v_seqs, half2_v_seqs, jump_to_end_v = get_v_tags(open("exttags_trav.txt", "rU"), v_half_split)
@@ -572,8 +572,8 @@ def analysis( Sequence_Reads, results, chain, with_statistics=True, with_reverse
 	    v_seqs, half1_v_seqs, half2_v_seqs, jump_to_end_v = get_v_tags(open("tags_trbv.txt", "rU"), v_half_split)
 	    j_seqs, half1_j_seqs, half2_j_seqs, jump_to_start_j = get_j_tags(open("tags_trbj.txt", "rU"), j_half_split)
 	  else:
-	    v_seqs, half1_v_seqs, half2_v_seqs, jump_to_end_v = get_v_tags(urllib2.urlopen("https://raw.githubusercontent.com/uclinfectionimmunity/Decombinator/master/tags_trbv.txt"), v_half_split)
-	    j_seqs, half1_j_seqs, half2_j_seqs, jump_to_start_j = get_j_tags(urllib2.urlopen("https://raw.githubusercontent.com/uclinfectionimmunity/Decombinator/master/tags_trbj.txt"), j_half_split)	    
+	    v_seqs, half1_v_seqs, half2_v_seqs, jump_to_end_v = get_v_tags(urllib2.urlopen("https://raw.githubusercontent.com/uclinfectionimmunity/Decombinator/master/humantags_trbv.txt"), v_half_split)
+	    j_seqs, half1_j_seqs, half2_j_seqs, jump_to_start_j = get_j_tags(urllib2.urlopen("https://raw.githubusercontent.com/uclinfectionimmunity/Decombinator/master/humantags_trbj.txt"), j_half_split)	    
 	elif tags == "extended":
 	  if os.path.isfile("exttags_trbv.txt") and os.path.isfile("exttags_trbj.txt"):  
 	    v_seqs, half1_v_seqs, half2_v_seqs, jump_to_end_v = get_v_tags(open("exttags_trbv.txt", "rU"), v_half_split)
