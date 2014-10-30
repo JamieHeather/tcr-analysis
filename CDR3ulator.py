@@ -1,5 +1,5 @@
-# CDR3ulator.py v1.9
-# James M. Heather, August 2014, UCL
+# CDR3ulator.py v2
+# James M. Heather, October 2014, UCL
 
 ##################
 ### BACKGROUND ###
@@ -16,6 +16,11 @@
   # Many of these genes will never generate CDR3s from this code regardless of whether they're included in CDR3s
   # This is typically due to V genes that lack the conserved C residue, or contain stop codons upstream of it.
   # These have been left in, both to provide a single location that describes the whole heterogeneity of the prototypical alpha/beta genes
+
+# New in v2:
+  # Have an option to output a file of non-functional rearrangements 
+  # Provides an option to turn off statistics standard out results
+    # This now includes the percentages of the different reasons for being assigned non-functional
 
 ##################
 ###### INPUT #####
@@ -42,13 +47,18 @@
 # The script also outputs some simple statistics about the number of productive rearrangements, and the frequency of different functionality genes
 # NB: See IMGT for further information on definitions of functionality and productivity:
   # http://www.imgt.org/IMGTScientificChart/SequenceDescription/IMGTfunctionality.html
+  
+# See 'USER OPTIONS' section
 
 ##################
 #### PACKAGES ####  
 ##################
 
+from __future__ import division
+
 from Bio.Seq import Seq
 from Bio.Alphabet import generic_dna
+
 import string
 import re
 from Bio import SeqIO
@@ -62,8 +72,10 @@ import urllib2
 ## USER OPTIONS ##
 ##################
 
-dcr_output = False	# False => .cdr3 files / True => .dcrcdr3 files
-include_gxg = False	
+dcr_output = True	# False => .cdr3 files / True => .dcrcdr3 files
+include_gxg = False	# Whether to include the last 3 residues of the CDR3 ending motif
+NF_out = True		# Outputs a second file containing rearrangements that do not encode functional CDR3s
+stats = True		# Whether to print summary results to stdout
         
 ###################
 #### FUNCTIONS ####
@@ -156,20 +168,24 @@ def get_cdr3(dcr, chain, vregions, jregions, vconservedc):
 
   nt = ''.join([v_used, ins_nt, j_used])
   
-  # 2. Check whether whole rearrangement is in frame
+  # 2. Translate
+  aa = str(Seq(nt, generic_dna).translate())
+
+  # 3. Check whether whole rearrangement is in frame
   if (len(nt)-1) % 3 == 0:
     in_frame = 1
   else:
-    return "Out of frame"
+    if '*' in aa:
+      return "OOF_with_stop"
+    else:
+      return "OOF_without_stop"
 
-  # 3. Translate
-  aa = str(Seq(nt, generic_dna).translate())
 
-  # 4. Check for stop codons
+  # 4. Check for stop codons in the in-frame rearrangements
   if '*' not in aa:
     no_stop = 1
   else:
-    return "Contains stop codon"
+    return "IF_with_stop"
 
   # 5. Check for conserved cysteine in the V gene
   if aa[vconservedc[v]-1] == 'C':
@@ -181,7 +197,7 @@ def get_cdr3(dcr, chain, vregions, jregions, vconservedc):
       start_cdr3 = vconservedc[v]-1
     
   else:
-    return "No conserved cysteine"
+    return "No_conserved_cysteine"
   
   # 5.5 Having found conserved cysteine, only need look downstream to find other end of CDR3
   downstream_c = aa[start_cdr3:]
@@ -222,7 +238,7 @@ def get_cdr3(dcr, chain, vregions, jregions, vconservedc):
 	    end_cdr3 = len(downstream_c) - 11 + start_cdr3 + 1
    
 	else:
-	  return "No conserved FGXG"
+	  return "No_conserved_FGXG"
 	  
     else: # TRAJ59
       site = downstream_c[-9:-5]     
@@ -255,7 +271,7 @@ def get_cdr3(dcr, chain, vregions, jregions, vconservedc):
 	  end_cdr3 = len(downstream_c) - 8 + start_cdr3 + 1      
 
   else:
-    return "No conserved FGXG"
+    return "No_conserved_FGXG"
   
   return aa[start_cdr3:end_cdr3]    
 
@@ -312,13 +328,15 @@ F_count = 0
 
 # Count non-productive rearrangments
 fail_count = coll.Counter()
-fails = ["Out of frame", "Contains stop codon", "No conserved cysteine", "No conserved FGXG"]
+fails = ["OOF_with_stop", "OOF_without_stop", "IF_with_stop", "No_conserved_cysteine", "No_conserved_FGXG"]
 
 # Store and count CDR3s
 if dcr_output == False:
   cdr3_count = coll.Counter()
 elif dcr_output == True:
   dcr_cdr3_count = coll.Counter()
+
+nf_cdr3_count = coll.Counter()
 
 # Count the number of F, ORF and P genes used for both productive and non-productive rearrangements
 pVf = 0
@@ -402,6 +420,7 @@ for line in infile:
     
   else:
     
+    nf_cdr3_count[dcr_cdr3] += frequency
     fail_count[cdr3] += 1
     
     # And again for the non-productively rearranged receptors
@@ -443,9 +462,7 @@ if dcr_output == True:
   outfile = open(outfilename, "w")
     
   for x in dcr_cdr3_count:
-    
     outtext = x + ", " + str(dcr_cdr3_count[x])
-    
     print >> outfile, outtext
       
   infile.close()
@@ -457,30 +474,45 @@ elif dcr_output == False:
   outfile = open(outfilename, "w")
 
   for x in cdr3_count:
-    
     outtext = x + ", " + str(cdr3_count[x])
-    
     print >> outfile, outtext
       
   infile.close()
   outfile.close()
 
+if NF_out == True:  
+  nffilename = filename.split(".")[0]+".nf"
+  nffile = open(nffilename, "w")
+
+  for x in nf_cdr3_count:
+    outtext = x + ", " + str(nf_cdr3_count[x])
+    print >> nffile, outtext
+  nffile.close()    
+    
 NF_count = sum(fail_count.values())
         
 ###################
 ##### RESULTS #####
 ###################
 
-print "Reading", str(line_count), "Decombinator-assigned rearrangements from", str(filename) + ", and writing out to", str(outfilename), "\n"
+if stats == True:
+  print "Reading", str(line_count), "Decombinator-assigned rearrangements from", str(filename) + ", and writing out to", str(outfilename), "\n"
 
-print '{0:,}'.format(F_count), "productive rearrangements detected" 
-print "\tV gene usage:\t" + '{0:,}'.format(pVf), "F;\t" + '{0:,}'.format(pVorf), "ORF;\t" +  '{0:,}'.format(pVp), "P"
-print "\tJ gene usage:\t" + '{0:,}'.format(pJf), "F;\t" + '{0:,}'.format(pJorf), "ORF;\t" + '{0:,}'.format(pJp), "P\n"
+  print '{0:,}'.format(F_count), "productive rearrangements detected" 
+  print "\tV gene usage:\t" + '{0:,}'.format(pVf), "F;\t" + '{0:,}'.format(pVorf), "ORF;\t" +  '{0:,}'.format(pVp), "P"
+  print "\tJ gene usage:\t" + '{0:,}'.format(pJf), "F;\t" + '{0:,}'.format(pJorf), "ORF;\t" + '{0:,}'.format(pJp), "P\n"
 
-print '{0:,}'.format(NF_count), "non-productive rearrangements detected"
-print "\tV gene usage:\t" + '{0:,}'.format(npVf), "F;\t" + '{0:,}'.format(npVorf), "ORF;\t" +  '{0:,}'.format(npVp), "P"
-print "\tJ gene usage:\t" + '{0:,}'.format(npJf), "F;\t" + '{0:,}'.format(npJorf), "ORF;\t" + '{0:,}'.format(npJp), "P\n"
+  print '{0:,}'.format(NF_count), "non-productive rearrangements detected"
+  print "\tV gene usage:\t" + '{0:,}'.format(npVf), "F;\t" + '{0:,}'.format(npVorf), "ORF;\t" +  '{0:,}'.format(npVp), "P"
+  print "\tJ gene usage:\t" + '{0:,}'.format(npJf), "F;\t" + '{0:,}'.format(npJorf), "ORF;\t" + '{0:,}'.format(npJp), "P\n"
+
+  print 'Non-functional rearrangement statistics:'
+  print '\tOut of frame, no stop codon:\t {:.2%}'.format(fail_count['OOF_without_stop']/NF_count) + "\t(" + str(fail_count['OOF_without_stop']) + ")"
+  print '\tOut of frame, with stop codon:\t {:.2%}'.format(fail_count['OOF_with_stop']/NF_count) + "\t(" + str(fail_count['OOF_with_stop']) + ")"
+  print '\tIn frame, with stop codon:\t {:.2%}'.format(fail_count['IF_with_stop']/NF_count) + "\t(" + str(fail_count['IF_with_stop']) + ")"
+  print '\tNo conserved cysteine at start:\t {:.2%}'.format(fail_count['No_conserved_cysteine']/NF_count) + "\t(" + str(fail_count['No_conserved_cysteine']) + ")"
+  print '\tNo conserved FGXG at end:\t {:.2%}'.format(fail_count['No_conserved_FGXG']/NF_count) + "\t(" + str(fail_count['No_conserved_FGXG']) + ")"
 
 if (F_count + NF_count) <> line_count:
   print "\nError detected: Sum of productive and non-productive sorted sequences does not equal total number of input sequences"
-  
+    
