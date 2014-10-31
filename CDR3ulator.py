@@ -47,6 +47,8 @@
 # The script also outputs some simple statistics about the number of productive rearrangements, and the frequency of different functionality genes
 # NB: See IMGT for further information on definitions of functionality and productivity:
   # http://www.imgt.org/IMGTScientificChart/SequenceDescription/IMGTfunctionality.html
+  # Essentially, 'functionality' refers to the predicted ability of certain germline genes to contribute to working receptors
+  # 'Productive' refers to the predicted ability of a given rearrangement to encode a working receptor chain
   
 # See 'USER OPTIONS' section
 
@@ -74,7 +76,7 @@ import urllib2
 
 dcr_output = True	# False => .cdr3 files / True => .dcrcdr3 files
 include_gxg = False	# Whether to include the last 3 residues of the CDR3 ending motif
-NF_out = True		# Outputs a second file containing rearrangements that do not encode functional CDR3s
+NP_out = True		# Outputs a second file containing rearrangements that do not encode productive CDR3s
 stats = True		# Whether to print summary results to stdout
         
 ###################
@@ -336,7 +338,7 @@ if dcr_output == False:
 elif dcr_output == True:
   dcr_cdr3_count = coll.Counter()
 
-nf_cdr3_count = coll.Counter()
+np_cdr3_count = coll.Counter()
 
 # Count the number of F, ORF and P genes used for both productive and non-productive rearrangements
 pVf = 0
@@ -420,7 +422,7 @@ for line in infile:
     
   else:
     
-    nf_cdr3_count[dcr_cdr3] += frequency
+    np_cdr3_count[dcr_cdr3] += frequency
     fail_count[cdr3] += 1
     
     # And again for the non-productively rearranged receptors
@@ -480,16 +482,16 @@ elif dcr_output == False:
   infile.close()
   outfile.close()
 
-if NF_out == True:  
-  nffilename = filename.split(".")[0]+".nf"
-  nffile = open(nffilename, "w")
+if NP_out == True:  
+  npfilename = filename.split(".")[0]+".nf"
+  npfile = open(npfilename, "w")
 
-  for x in nf_cdr3_count:
-    outtext = x + ", " + str(nf_cdr3_count[x])
-    print >> nffile, outtext
-  nffile.close()    
+  for x in np_cdr3_count:
+    outtext = x + ", " + str(np_cdr3_count[x])
+    print >> npfile, outtext
+  npfile.close()    
     
-NF_count = sum(fail_count.values())
+NP_count = sum(fail_count.values())
         
 ###################
 ##### RESULTS #####
@@ -502,17 +504,17 @@ if stats == True:
   print "\tV gene usage:\t" + '{0:,}'.format(pVf), "F;\t" + '{0:,}'.format(pVorf), "ORF;\t" +  '{0:,}'.format(pVp), "P"
   print "\tJ gene usage:\t" + '{0:,}'.format(pJf), "F;\t" + '{0:,}'.format(pJorf), "ORF;\t" + '{0:,}'.format(pJp), "P\n"
 
-  print '{0:,}'.format(NF_count), "non-productive rearrangements detected"
+  print '{0:,}'.format(NP_count), "non-productive rearrangements detected"
   print "\tV gene usage:\t" + '{0:,}'.format(npVf), "F;\t" + '{0:,}'.format(npVorf), "ORF;\t" +  '{0:,}'.format(npVp), "P"
   print "\tJ gene usage:\t" + '{0:,}'.format(npJf), "F;\t" + '{0:,}'.format(npJorf), "ORF;\t" + '{0:,}'.format(npJp), "P\n"
 
-  print 'Non-functional rearrangement statistics:'
-  print '\tOut of frame, no stop codon:\t {:.2%}'.format(fail_count['OOF_without_stop']/NF_count) + "\t(" + str(fail_count['OOF_without_stop']) + ")"
-  print '\tOut of frame, with stop codon:\t {:.2%}'.format(fail_count['OOF_with_stop']/NF_count) + "\t(" + str(fail_count['OOF_with_stop']) + ")"
-  print '\tIn frame, with stop codon:\t {:.2%}'.format(fail_count['IF_with_stop']/NF_count) + "\t(" + str(fail_count['IF_with_stop']) + ")"
-  print '\tNo conserved cysteine at start:\t {:.2%}'.format(fail_count['No_conserved_cysteine']/NF_count) + "\t(" + str(fail_count['No_conserved_cysteine']) + ")"
-  print '\tNo conserved FGXG at end:\t {:.2%}'.format(fail_count['No_conserved_FGXG']/NF_count) + "\t(" + str(fail_count['No_conserved_FGXG']) + ")"
+  print 'Non-productive rearrangement statistics:'
+  print '\tOut of frame, no stop codon:\t {:.2%}'.format(fail_count['OOF_without_stop']/NP_count) + "\t(" + str(fail_count['OOF_without_stop']) + ")"
+  print '\tOut of frame, with stop codon:\t {:.2%}'.format(fail_count['OOF_with_stop']/NP_count) + "\t(" + str(fail_count['OOF_with_stop']) + ")"
+  print '\tIn frame, with stop codon:\t {:.2%}'.format(fail_count['IF_with_stop']/NP_count) + "\t(" + str(fail_count['IF_with_stop']) + ")"
+  print '\tNo conserved cysteine at start:\t {:.2%}'.format(fail_count['No_conserved_cysteine']/NP_count) + "\t(" + str(fail_count['No_conserved_cysteine']) + ")"
+  print '\tNo conserved FGXG at end:\t {:.2%}'.format(fail_count['No_conserved_FGXG']/NP_count) + "\t(" + str(fail_count['No_conserved_FGXG']) + ")"
 
-if (F_count + NF_count) <> line_count:
+if (F_count + NP_count) <> line_count:
   print "\nError detected: Sum of productive and non-productive sorted sequences does not equal total number of input sequences"
     

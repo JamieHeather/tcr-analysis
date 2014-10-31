@@ -331,7 +331,7 @@ def plot_j_usage( handle, chain="beta", savefilename="Jusage", order="frequency"
         freq_vector_j = [0]*num_genes
         for line in handle:
             elements = line.rstrip("\n")
-            if tag_set == "original" and int(elements.split(',')[1]) >= 12:
+            if tag_set == "original" and int(elements.split(',')[1]) > 12:
 	      continue            
             freq_vector_j[int(elements.split(',')[1])] += 1
             
@@ -592,7 +592,7 @@ def plot_vj_joint_dist( handle, chain="beta", savefilename="VJusage" ):
 
             elements = line.rstrip("\n")
 
-            if (tag_set == "original" and int(elements.split(',')[0]) >= 45) or (tag_set == "original" and int(elements.split(',')[1]) >= 12):
+            if (tag_set == "original" and int(elements.split(',')[0]) >= 45) or (tag_set == "original" and int(elements.split(',')[1]) > 12):
 	      continue	  
 
             v = int(elements.split(',')[0])
