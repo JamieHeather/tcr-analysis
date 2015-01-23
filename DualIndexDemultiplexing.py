@@ -148,7 +148,7 @@ for record1, record2, record3 in izip(fq1, fq2, fq3):
   X2seq = str(record2.seq)
   readseq = str(record1.seq)[12:]
 
-  N1qual = record1.format("fastq").split('\n')[3][0:6][0:6]
+  N1qual = record1.format("fastq").split('\n')[3][0:6]
   N2qual = record3.format("fastq").split('\n')[3][0:6]
   N2qual = record3.format("fastq").split('\n')[3][0:6]
   X1qual = record1.format("fastq").split('\n')[3][6:12]
