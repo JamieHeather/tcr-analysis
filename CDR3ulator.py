@@ -272,8 +272,8 @@ def get_cdr3(dcr, chain, vregions, jregions, vconservedc):
 	else:
 	  end_cdr3 = len(downstream_c) - 8 + start_cdr3 + 1      
 
-  else:
-    return "No_conserved_FGXG"
+    else:
+      return "No_conserved_FGXG"
   
   return aa[start_cdr3:end_cdr3]    
 
@@ -483,7 +483,7 @@ elif dcr_output == False:
   outfile.close()
 
 if NP_out == True:  
-  npfilename = filename.split(".")[0]+".nf"
+  npfilename = filename.split(".")[0]+".np"
   npfile = open(npfilename, "w")
 
   for x in np_cdr3_count:

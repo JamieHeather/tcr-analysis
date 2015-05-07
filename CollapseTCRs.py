@@ -51,10 +51,8 @@ import collections as coll
 import sys
 import Levenshtein as lev
 import re
-from operator import itemgetter
+#from operator import itemgetter
 from time import time, clock
-import json
-import signal
 from Bio.Seq import Seq
 from Bio import SeqIO
 from Bio.SeqRecord import SeqRecord

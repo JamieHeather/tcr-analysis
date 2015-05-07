@@ -12,7 +12,7 @@
 # Raw output from any version of decombinator, e.g. *.n12 files produced by vDCR
 
 # Run:
-# sh Uniqify.sh FILENAME.fq
+# sh Uniqify.sh FILENAME.n12
 # for x in *n12; do echo $x; sh Uniqify.sh $x; done
 
 ### OUTPUT ### 
