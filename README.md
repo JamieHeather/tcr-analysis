@@ -2,17 +2,17 @@
 
 James M. Heather, University College London, UK, 2014
 
-For citeable version (v1) see http://dx.doi.org/10.6084/m9.figshare.1157428 
+For citeable version (v1) see [http://dx.doi.org/10.6084/m9.figshare.1157428](http://dx.doi.org/10.6084/m9.figshare.1157428) 
 
-This repository has been built to contain the suite of inter-related T-cell receptor (TCR) analysis scripts that I've developed in the course of my PhD, here made available as an adjunct to my doctoral thesis.
+This repository has been built to contain the suite of inter-related T-cell receptor (TCR) analysis scripts that I've developed in the course of my PhD, here made available as an adjunct to [my doctoral thesis](http://discovery.ucl.ac.uk/1470278/1/thesis.pdf).
 
-A number of these scripts were also used in the analysis of the data that made up the results of my paper (Heather et al, ***ADD REFERENCE***).
+A number of these scripts were also used in the analysis of the data that made up the results of my paper ([Heather *et al* 2016, Frontiers in Immunology](http://dx.doi.org/10.3389/fimmu.2015.00644)).
 
 The raw fastq sequence data (which the scripts contained herein were used on) are available at the Sequence Read Archive with the BioProject accession number SRP045430.
 
-That data was processed with these scripts using vDCR (with standard tags), CollapseTCRs and CDR3ulator (dcr_output = TRUE), and is available on Figshare at http://dx.doi.org/10.6084/m9.figshare.1153921 .
+That data was processed with these scripts using vDCR (with standard tags), CollapseTCRs and CDR3ulator (dcr_output = TRUE), and is [available on Figshare](http://dx.doi.org/10.6084/m9.figshare.1153921).
 
-Please note that a number of these scripts are either modifications to existing code (such as vDCR.py, which is my re-working of code produced by Dr. Niclas Thomas) or in close colloboration with other lab members, particularly Katharine Best.
+Please note that a number of these scripts are either modifications to existing code (such as vDCR.py, which is my re-working of code produced by Dr. Niclas Thomas) or in close colloboration with other lab members, particularly Dr. Katharine Best.
 
 ##===== STANDARD PIPELINE =====
 
