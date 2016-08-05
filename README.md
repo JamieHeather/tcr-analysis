@@ -91,5 +91,5 @@ Please note that a number of these scripts are either modifications to existing 
 - Can be used to reduce file size and find the number of unique TCR assignations in raw data     
 
 
-
+# For the most up-to-date version of the Decombinator pipeline, please go the the [innate2adapative / Decombinator repository](https://github.com/innate2adaptive/Decombinator)
 
